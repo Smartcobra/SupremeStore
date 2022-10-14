@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.security.Principal;
 
 @RestController
-@RequestMapping("/v1/api/user")
+//@RequestMapping("/v1/api/user")
 public class UserController {
 
 
@@ -16,7 +16,7 @@ public class UserController {
 //        return "i am user";
 //    }
 
-    @GetMapping(value = "/username")
+    @GetMapping(value = "/messages")
     public String currentUserName(Principal principal) {
      return principal.getName();
         //return "jitu";

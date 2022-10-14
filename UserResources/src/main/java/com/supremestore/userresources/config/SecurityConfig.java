@@ -3,6 +3,7 @@ package com.supremestore.userresources.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -10,37 +11,44 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import java.util.List;
 
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig {
 
-    @Bean
-    public SecurityFilterChain filterChain (HttpSecurity http) throws Exception {
-
-        http.cors(c->{
-            CorsConfigurationSource source=s->{
-                CorsConfiguration cc=new CorsConfiguration();
-                cc.setAllowCredentials(true);
-                cc.setAllowedOrigins(List.of("http://127.0.0.1:3000"));
-                cc.setAllowedHeaders(List.of("*"));
-                cc.setAllowedMethods(List.of("*"));
-                return  cc;
-            };
-            c.configurationSource(source);
-        });
-
-
-        return http.oauth2ResourceServer(j->j.jwt().jwkSetUri("http://localhost:8080/oauth2/jwks"))
-                .csrf().disable().authorizeRequests().anyRequest().authenticated()
-                .and().build();
-
-//            http.mvcMatcher("/user/**")
+//    @Bean
+//    public SecurityFilterChain filterChain (HttpSecurity http) throws Exception {
+//
+//        http.cors(c->{
+//            CorsConfigurationSource source=s->{
+//                CorsConfiguration cc=new CorsConfiguration();
+//                cc.setAllowCredentials(true);
+//                cc.setAllowedOrigins(List.of("http://127.0.0.1:3000"));
+//                cc.setAllowedHeaders(List.of("*"));
+//                cc.setAllowedMethods(List.of("*"));
+//                return  cc;
+//            };
+//            c.configurationSource(source);
+//        });
+//
+//
+//        return http.oauth2ResourceServer(j->j.jwt().jwkSetUri("http://localhost:8080/oauth2/jwks"))
+//                .csrf()
+//                .disable()
 //                .authorizeRequests()
-//                .mvcMatchers("/user/**")
-//                .access("hasAuthority('SCOPE_user.read')")
+//                .anyRequest().authenticated()
 //                .and()
-//                .oauth2ResourceServer()
-//                .jwt();
+//                .build();
+//
+//    }
 
-      //      return http.build();
-
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.mvcMatcher("/**")
+                .authorizeRequests()
+                .mvcMatchers("/**")
+                .access("hasAuthority('SCOPE_message.read')")
+                .and()
+                .oauth2ResourceServer()
+                .jwt();
+        return http.build();
     }
 }

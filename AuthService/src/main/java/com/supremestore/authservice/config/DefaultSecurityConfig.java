@@ -36,7 +36,8 @@ public class DefaultSecurityConfig {
                 .formLogin()
                 .loginPage("/login")
                 .successHandler(new RefererRedirectionAuthenticationSuccessHandler())
-                .defaultSuccessUrl("http://127.0.0.1:3000/authorized").permitAll()
+               // .defaultSuccessUrl("http://127.0.0.1:3000/authorized").permitAll()
+                .defaultSuccessUrl("http://127.0.0.1:8083/authorized").permitAll()
                 .and()
                 .csrf().disable();
         ;

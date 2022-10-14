@@ -7,6 +7,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="EdgeService" />
         <module name="UserResources" />
         <module name="AuthService" />
       </profile>
@@ -14,6 +15,7 @@
     <bytecodeTargetLevel>
       <module name="API-Gateway" target="11" />
       <module name="AuthService" target="11" />
+      <module name="EdgeService" target="11" />
       <module name="UserResources" target="11" />
     </bytecodeTargetLevel>
   </component>
@@ -21,6 +23,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="API-Gateway" options="-parameters" />
       <module name="AuthService" options="-parameters" />
+      <module name="EdgeService" options="-parameters" />
       <module name="UserResources" options="-parameters" />
     </option>
   </component>

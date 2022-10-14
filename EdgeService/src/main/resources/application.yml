@@ -1,0 +1,34 @@
+server:
+  port: 8083
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          gateway:
+            provider: my-provider
+            client-id: client
+            client-secret: password
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://127.0.0.1:8083/login/oauth2/code/{registrationId}"
+            scope: openid, read ,write
+        provider:
+          my-provider:
+            issuer-uri: http://localhost:8080
+  ##application.name: backend-gateway-client
+  cloud:
+    gateway:
+      routes:
+        - id: resources
+          uri: http://127.0.0.1:9000/messages
+          predicates:
+          - Path=/messages/**
+          filters:
+          - TokenRelay=
+
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
