@@ -2,6 +2,8 @@ server:
   port: 8083
 
 spring:
+  application:
+    name: GATEWAY-SERVICE
   security:
     oauth2:
       client:
@@ -19,11 +21,28 @@ spring:
   ##application.name: backend-gateway-client
   cloud:
     gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+        - AddResponseHeader=Access-Control-Allow-Origin, *
+      globalcors:
+        add-to-simple-url-handler-mapping: true
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - DELETE
+              - DELETE
+              - HEAD
+              - OPTIONS
+            allowedHeaders: "*"
+            allowCredentials: true
       routes:
-        - id: resources
-          uri: http://127.0.0.1:9000/messages
+        - id: user-service
+          uri: lb://USER-SERVICE
           predicates:
-          - Path=/messages/**
+          - Path=/v1/api/user/*
           filters:
           - TokenRelay=
 
@@ -32,3 +51,8 @@ logging:
     org:
       springframework:
         web: DEBUG
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
